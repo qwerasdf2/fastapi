@@ -1,7 +1,15 @@
 FROM python:3.12.3
 
-COPY . .
+RUN mkdir /fastapi_app
+
+WORKDIR /fastapi_app
+
+COPY requirements.txt .
 
 RUN pip install -r requirements.txt
+
+COPY . .
+
+WORKDIR src
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
