@@ -13,6 +13,10 @@ services:
     expose:
       - 6379
 
+  tesseract:
+    image: chainguard/tesseract:latest
+    container_name: tesseract_app
+
   app:
     build:
       context: .
@@ -23,6 +27,7 @@ services:
     depends_on:
       - db
       - redis
+      - tesseract
 
   celery:
     build:
