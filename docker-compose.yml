@@ -12,13 +12,13 @@ services:
   app:
     build:
       context: .
-      container_name: fastapi_app
-      command: ["/fastapi_app/docker/app.sh"]
-      ports:
-        - 80:80
-      depends_on:
-        - db
-        - redis
+    container_name: fastapi_app
+    command: ["/fastapi_app/docker/app.sh"]
+    ports:
+      - 80:80
+    depends_on:
+      - db
+      - redis
 
   celery:
     build:
