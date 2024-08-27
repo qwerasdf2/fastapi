@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16.3
+    container_name: db_app
+    command: -p 5432
+    expose:
+      - 5432
+
+  redis:
+    image: redis:7
+    container_name: redis_app
+    command: -p 6379
+    expose:
+      - 6379
+
+  app:
+    build:
+      context: .
+    container_name: fastapi_app
+    command: ["/fastapi_app/docker/app.sh"]
+    ports:
+      - 80:80
+    depends_on:
+      - db
+      - redis
+
+  celery:
+    build:
+      context: .
+    container_name: celery_app
+    command: ["/fastapi_app/docker/celery.sh", "celery"]
+    depends_on:
+      - redis
+
+  flower:
+    build:
+      context: .
+    container_name: flower_app
+    command: ["/fastapi_app/docker/celery.sh", "flower"]
+    depends_on:
+      - redis
+      - celery
+    ports:
+      - 8888:5555
